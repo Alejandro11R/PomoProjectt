@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tracker de Disciplina</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Botón de configuración -->
+    <div class="settings-btn" onclick="toggleSettings()">⚙️</div>
+    
+    <!-- Panel de configuración -->
+    <div id="settings-panel" class="settings-panel">
+        <h3>⚙️ Configuración</h3>
+        
+        <div class="setting-group">
+            <label>🎨 Tema:</label>
+            <select id="theme-selector" onchange="changeTheme()">
+                <option value="purple">Morado (Default)</option>
+                <option value="blue">Azul</option>
+                <option value="green">Verde</option>
+                <option value="dark">Oscuro</option>
+                <option value="light">Claro</option>
+            </select>
+        </div>
+        
+        <div class="setting-group">
+            <label>🍅 Modo Pomodoro:</label>
+            <div class="toggle-switch">
+                <input type="checkbox" id="pomodoro-toggle" onchange="togglePomodoro()">
+                <span class="slider"></span>
+            </div>
+        </div>
+        
+        <div class="setting-group" id="pomodoro-settings" style="display:none;">
+            <label>⏰ Trabajo (min):</label>
+            <input type="number" id="work-time" value="25" min="5" max="120">
+            <label>☕ Descanso (min):</label>
+            <input type="number" id="break-time" value="5" min="1" max="30">
+        </div>
+        
+        <div class="setting-group">
+            <label>🔔 Notificaciones:</label>
+            <div class="toggle-switch">
+                <input type="checkbox" id="notifications-toggle" onchange="toggleNotifications()">
+                <span class="slider"></span>
+            </div>
+        </div>
+        
+        <button onclick="toggleSettings()" class="close-settings">Cerrar</button>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Tu Día de Disciplina</h1>
+            <p id="quote"></p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('today')">Hoy</button>
+            <button class="tab" onclick="showTab('stats')">Estadísticas</button>
+        </div>
+
+        <!-- Tab: Hoy -->
+        <div id="tab-today" class="tab-content active">
+            <!-- Streak -->
+            <div class="streak-box">
+                <div class="streak-icon">🔥</div>
+                <div class="streak-number" id="streak">0</div>
+                <div class="streak-label">días consecutivos</div>
+                <div class="progress-text" id="progress">0/2 tareas prioritarias completadas hoy</div>
+            </div>
+
+            <!-- Tasks -->
+            <div class="tasks-container">
+                <h2>Horario del día</h2>
+                
+                <div id="tasks-list"></div>
+
+                <button id="add-task-btn" class="add-btn">➕ Agregar tarea</button>
+                <button id="reset-btn" class="reset-btn">Resetear día</button>
+            </div>
+
+            <!-- Recordatorio -->
+            <div class="reminder">
+                <h3>🎯 Recuerda:</h3>
+                <ul>
+                    <li>Java 2 horas TODOS LOS DÍAS (no negociable)</li>
+                    <li>Antes de distracciones → 1 hora de código mínimo</li>
+                    <li>Solo 25 minutos para empezar, luego sigues</li>
+                    <li>7 meses atrás ya pasaron, HOY es lo que importa</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab: Estadísticas -->
+        <div id="tab-stats" class="tab-content">
+            <div class="stats-container">
+                <h2>📊 Estadísticas</h2>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Racha actual</div>
+                        <div class="stat-value" id="stat-streak">0 días</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Mejor racha</div>
+                        <div class="stat-value" id="stat-best-streak">0 días</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Tareas completadas</div>
+                        <div class="stat-value" id="stat-completed">0 tareas</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Tiempo total invertido</div>
+                        <div class="stat-value" id="stat-time">0 horas</div>
+                    </div>
+                </div>
+
+                <h3>📅 Últimos 7 días</h3>
+                <div id="weekly-chart" class="weekly-chart"></div>
+
+                <h3>💪 Por actividad</h3>
+                <div id="activity-breakdown" class="activity-breakdown"></div>
+            </div>
+        </div>
+
+        <p class="date" id="date"></p>
+    </div>
+
+    <!-- Modal de notas -->
+    <div id="notes-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeNotesModal()">&times;</span>
+            <h3>📝 Notas de la tarea</h3>
+            <p id="notes-task-name"></p>
+            <textarea id="notes-textarea" placeholder="¿Qué aprendiste? ¿Qué lograste hoy?"></textarea>
+            <button onclick="saveNotes()" class="save-notes-btn">Guardar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
